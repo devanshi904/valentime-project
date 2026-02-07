@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine Puzzle 💝</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #cc1a91;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 10px;
+            text-align: center;
+            font-family: 'poppins', sans-serif;
+            overflow: hidden;
+        }
+
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 360px;
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            animation: pop 1s ease;
+        }
+
+        @keyframes pop {
+            from {
+                transform: scale(0.7);
+                opacity: 0
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1
+            }
+        }
+
+        img {
+            width: 150px;
+            margin-bottom: 15px;
+            max-height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        h2 {
+            color: #ff3366;
+            font-size: 1.4rem;
+            animation: beat 1.5s infinite;
+        }
+
+        button {
+            padding: 10px 25px;
+            margin: 8px 5px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #yes {
+            background: #ff3366;
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+
+        #yes:hover {
+            transform: scale(1.1);
+        }
+
+        #no {
+            background: #ddd;
+            position: absolute;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 400px) {
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 10px 16px;
+            }
+        }
+
+        @keyframes floatUp {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(-100vh);
+                opacity: 0;
+            }
+        }
+
+        #progress {
+            color: #ff4d6d;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .dot {
+            position: fixed;
+            top: -10px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: fall 3.5s linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: .9;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <h2 id="question"></h2>
+        <p id="progress"></p>
+        <img id="gif" src="" alt="gif">
+        <div>
+            <button class="yes" onclick="nextQuestion()">Yes ❤️</button>
+            <button class="no" onclick="thinkAgain()">No 💔</button>
+        </div>
+    </div>
+
+    <audio id="bgMusic" src="love.mp3" loop></audio>
+    <audio id="clickSound" src="click.mp3"></audio>
+
+    <script>
+        const data = [
+            { q: "Do you love me?", gif: "kuromi-soft.gif" },
+            { q: "Think again", gif: "thinking.png.gif" },
+            { q: "Are you sure?", gif: "confused-penguin.webp" },
+            { q: "You will be mine?", gif: "mine-mochi.gif" },
+            { q: "You will be my Valentine?", gif: "bubu-rose-bubu-sweet.gif" },
+            { q: "Will you marry me?", gif: "love-wedding.gif" },
+            { q: "Think again", gif: "gork-pardon.webp" },
+            { q: "Finally, you solved this puzzle!", gif: "quby.webp" },
+            { q: "I loveee youuu ❤️", gif: "fofo-cute.gif" },
+            { q: "Happy Valentine Day 💝", gif: "theecards-ecards.gif" },
+        ];
+
+        let index = 0;
+
+        function loadQuestion() {
+            document.getElementById("question").innerText = data[index].q;
+            document.getElementById("gif").src = data[index].gif;
+
+
+
+            document.getElementById("progress").innerText =
+                `Question ${index + 1} / ${data.length}`;
+
+        }
+
+        function nextQuestion() {
+            if (index < data.length - 1) {
+                index++;
+                loadQuestion();
+            } else {
+                // Redirect to WhatsApp after last question
+                let phone = "YOUR_NUMBER_WITH_COUNTRY_CODE"; // e.g., 919876543210
+                let message = encodeURIComponent("Hey! I just completed your Valentine puzzle 💝😍");
+                window.location.href = `https://wa.me/${phone}?text=${message}`;
+            }
+        }
+
+        function thinkAgain() {
+            alert("Soch lo ek baar aur 😉");
+        }
+
+        loadQuestion();
+        setInterval(() => {
+            const heart = document.createElement("div");
+            heart.innerHTML = "❤️";
+            heart.style.position = "fixed";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.bottom = "0px";
+            heart.style.fontSize = Math.random() * 20 + 10 + "px";
+            heart.style.animation = "floatUp 5s linear";
+            document.body.appendChild(heart);
+
+            setTimeout(() => heart.remove(), 5000);
+        }, 400);
+        const noBtn = document.getElementById("no");
+
+        noBtn.addEventListener("mouseover", () => {
+            noBtn.style.position = "absolute";
+            noBtn.style.left = Math.random() * 80 + "vw";
+            noBtn.style.top = Math.random() * 80 + "vh";
+        });
+        document.body.innerHTML = `
+  <h1 style="color:#ff3366;text-align:center;">
+    💖 Happy Valentine Day 💖
+  </h1>
+  <canvas id="confetti"></canvas>
+`;
+        const bg = document.getElementById('bgMusic');
+        bg.volume = 0.35;
+
+        function confetti() {
+            for (let i = 0; i < 120; i++) {
+                const d = document.createElement('div');
+                d.className = 'dot';
+                d.style.left = Math.random() * 100 + 'vw';
+                d.style.background = `hsl(${Math.random() * 360},80%,60%)`;
+                d.style.animationDelay = Math.random() * 1 + 's';
+                document.body.appendChild(d);
+                setTimeout(() => d.remove(), 4000);
+            }
+        }
+
+
+    </script>
+
+</body>
+
+</html>
